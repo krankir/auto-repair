@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
 
     'users.apps.UsersConfig',
+    'repairs.apps.RepairsConfig',
 ]
 
 MIDDLEWARE = [
