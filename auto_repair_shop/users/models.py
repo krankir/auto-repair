@@ -2,9 +2,21 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+class Role(models.TextChoices):
+    """Роли пользователей."""
+
+    CUSTOMER = 'CUSTOMER', 'Клиенту'
+    TECHNICIAN = 'TECHNICIAN', 'Техник'
+    MASTER = 'MASTER', 'Мастер'
+    WORKER = 'WORKER', 'Слесорь'
+
+
 class User(AbstractUser):
     """Собственная модель пользователя."""
 
+    role = models.CharField(
+        max_length=50, choices=Role.choices, default=Role.CUSTOMER,
+    )
     email = models.EmailField('Электронная почта', max_length=250,  unique=True)
     email_verify = models.BooleanField(default=False)
 
