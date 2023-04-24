@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from repairs.models import Repair
+
+
+@admin.register(Repair)
+class RepairAdmin(admin.ModelAdmin):
+    ...
+
