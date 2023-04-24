@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Заявки</h1>
+    {% if user.role == 'CUSTOMER' %}
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{% url 'repairs:create_repair' %}" class="btn btn-success">Создать заявку</a>
+        </div>
+    </div>
+    {%  endif %}
+{% endblock %}
