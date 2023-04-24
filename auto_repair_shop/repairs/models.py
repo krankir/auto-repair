@@ -5,6 +5,8 @@ User = get_user_model()
 
 
 class Status(models.TextChoices):
+    """Статус заявок на ремонт."""
+
     CREATED = 'CREATED', 'Новая заявка от клиента'
     CONFIRMED = 'CONFIRMED', 'Подтверждена техником'
     READY_TO_WORK = 'READY_TO_WORK', 'Готова к работе'
@@ -12,6 +14,27 @@ class Status(models.TextChoices):
     VERIFICATION = 'VERIFICATION', 'Ремонт выполнен'
     TESTS = 'TESTS', 'На тестирование'
     RE_REPAIR = 'RE_REPAIR', 'На доработку'
+
+    @classmethod
+    def statuses_for_list_master(cls):
+        """Заявки, которые видит техник."""
+        return [
+            cls.CONFIRMED, cls.TESTS
+        ]
+
+    @classmethod
+    def statuses_for_list_technician(cls):
+        """Заявки, которые видит мастер."""
+        return [
+            cls.CREATED, cls.VERIFICATION
+        ]
+
+    @classmethod
+    def statuses_for_list_worker(cls):
+        """Заявки, которые видит мастер."""
+        return [
+            cls.READY_TO_WORK, cls.PROGRESS, cls.RE_REPAIR
+        ]
 
 
 class Repair(models.Model):
@@ -129,6 +152,14 @@ class Works(models.Model):
     """Класс наименования работы."""
 
     name = models.CharField(max_length=50, verbose_name='Работа')
+    type_repair = models.ForeignKey(
+        'TypeRepair',
+        related_name='works',
+        verbose_name='Тип работы',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Работа'

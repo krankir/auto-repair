@@ -18,7 +18,7 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = 'users:login'
 
-LOGIN_REDIRECT_URL = '/repair/'
+LOGIN_REDIRECT_URL = '/repairs/'
 LOGOUT_REDIRECT_URL = '/'
 # Application definition
 
