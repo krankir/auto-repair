@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 class Status(models.TextChoices):
-    RAW = 'CREATED', 'Новая заявка от клиента'
+    CREATED = 'CREATED', 'Новая заявка от клиента'
     CONFIRMED = 'CONFIRMED', 'Подтверждена техником'
     READY_TO_WORK = 'READY_TO_WORK', 'Готова к работе'
     PROGRESS = 'PROGRESS', 'В работе'
