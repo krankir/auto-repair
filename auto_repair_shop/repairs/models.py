@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -24,7 +25,7 @@ class Status(models.TextChoices):
 
     @classmethod
     def statuses_for_list_technician(cls):
-        """Заявки, которые видит мастер."""
+        """Заявки, которые видит техник."""
         return [
             cls.CREATED, cls.VERIFICATION
         ]
@@ -45,7 +46,10 @@ class Repair(models.Model):
     )
     description = models.TextField(verbose_name='Описание поломки')
     status = models.CharField(
-        max_length=50, choices=Status.choices, verbose_name='Статус заявки',
+        max_length=50,
+        choices=Status.choices,
+        verbose_name='Статус заявки',
+        default=Status.CREATED,
     )
     time_to_work = models.DateTimeField(
         verbose_name='Время начала работы', null=True, blank=True,
@@ -91,6 +95,9 @@ class Repair(models.Model):
 
     def __str__(self):
         return f'Статус заявки {self.pk} :{self.status}'
+
+    def get_absolute_url(self):
+        return reverse('repairs:detail', kwargs={'pk': self.pk})
 
 
 class PlacesToWork(models.Model):
