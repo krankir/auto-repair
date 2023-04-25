@@ -4,7 +4,7 @@
     {% if user.role == 'CUSTOMER' %}
     <div class="row">
         <div class="col-md-12">
-            <a href="{% url 'repairs:create_repair' %}" class="btn btn-success">Создать заявку</a>
+            <a href="{% url 'repairs:create' %}" class="btn btn-success">Создать заявку</a>
         </div>
     </div>
     {%  endif %}
@@ -20,6 +20,7 @@
                         <th>Тип ремонта</th>
                         <th>Дата и время ремонта</th>
                         <th>Статус</th>
+                        <th>Открыть</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,9 @@
                         <td>Не назначено</td>
                     {% endif %}
                     <td>{{ repair.get_status_display }}</td>
+                     <td>
+                        <a href="{{ repair.get_absolute_url }}">Открыть</a>
+                     </td>
                 </tr>
                 {% endfor %}
                 </tbody>
