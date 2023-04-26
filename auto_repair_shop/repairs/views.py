@@ -3,9 +3,10 @@ from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import FormView, ListView
 
-from repairs.forms import CustomerForm
+from repairs.forms import CustomerForm, TechnicianForm, MasterForm, WorkerForm
 from repairs.mixins import RepairMixin
 from repairs.models import Repair
+from users.models import Role
 
 User = get_user_model()
 
@@ -15,10 +16,22 @@ class DetailRepair(RepairMixin, View):
 
     template_name = 'detail.html'
 
+    def _get_form(self, repair):
+        """Возвращаем форму для роли пользователя."""
+        user_form = {
+            Role.CUSTOMER: None,
+            Role.TECHNICIAN: TechnicianForm(instance=repair),
+            Role.MASTER: MasterForm(instance=repair),
+            Role.WORKER: WorkerForm(instance=repair),
+        }
+        return user_form.get(self.request.user.role)
+
     def get(self, request, pk):
         _filter = self._get_repair_filter(self.request.user)
+        repair = get_object_or_404(Repair, pk=pk, **_filter)
         context = {
-            'repair': get_object_or_404(Repair, pk=pk, **_filter)
+            'repair': repair,
+            'form': self._get_form(repair)
         }
         return render(request, self.template_name, context)
 

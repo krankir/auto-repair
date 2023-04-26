@@ -3,4 +3,10 @@
   <h1>Заявка</h1>
   <hr>
   {% include 'repair.html' with repair=repair  %}
+  <hr>
+  <form action="" method="post">
+    {{ form }}
+    {% csrf_token%}
+    <button type="submit" class="btn btn-success">Обновить</button>
+  </form>
 {% endblock %}
