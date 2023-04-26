@@ -1,6 +1,86 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
-from repairs.models import Repair, Auto
+from repairs.models import Repair, Auto, PlacesToWork, TypeRepair, Parts, Status
+from users.models import Role
+
+User = get_user_model()
+
+
+class WorkerForm(forms.ModelForm):
+    """Форма для работы с заявками для слесаря."""
+
+    status = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=[
+            Status.PROGRESS,
+            Status.TESTS,
+        ]
+    )
+
+    class Meta:
+        model = Repair
+        fields = (
+            'status'
+        )
+
+
+class MasterForm(forms.ModelForm):
+    """Форма для работы с заявками для мастера."""
+
+    parts = forms.ModelMultipleChoiceField(
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+        queryset=Parts.objects.all(),
+    )
+    users = forms.ModelChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        queryset=User.objects.filter(role=Role.WORKER),
+    )
+    status = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=[
+            Status.READY_TO_WORK,
+            Status.RE_REPAIR,
+            Status.VERIFICATION,
+        ]
+    )
+
+    class Meta:
+        model = Repair
+        fields = (
+            'parts',
+            'users',
+            'status',
+        )
+
+
+class TechnicianForm(forms.ModelForm):
+    """Форма для работы с заявкой для техников."""
+
+    description = forms.CharField(
+        label='Описание поломки',
+        widget=forms.Textarea(attrs={"class": "form-control"}),
+    )
+    time_to_work = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={"class": "form-control"}),
+    )
+    places_to_work = forms.ModelChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        queryset=PlacesToWork.objects.all(),
+    )
+    type_repair = forms.ModelChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        queryset=TypeRepair.objects.all(),
+    )
+
+    class Meta:
+        model = Repair
+        fields = (
+            'description',
+            'time_to_work',
+            'places_to_work',
+            'type_repair',
+        )
 
 
 class CustomerForm(forms.ModelForm):
