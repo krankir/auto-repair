@@ -16,15 +16,30 @@ class DetailRepair(RepairMixin, View):
 
     template_name = 'detail.html'
 
-    def _get_form(self, repair):
-        """Возвращаем форму для роли пользователя."""
+    def _get_form(self, repair, data=None):
+        """Возвращаем форму исходя из роли пользователя."""
         user_form = {
             Role.CUSTOMER: None,
-            Role.TECHNICIAN: TechnicianForm(instance=repair),
-            Role.MASTER: MasterForm(instance=repair),
-            Role.WORKER: WorkerForm(instance=repair),
+            Role.TECHNICIAN: TechnicianForm(
+                data=data, instance=repair, initial={'status': 'CONFIRMED'}),
+            Role.MASTER: MasterForm(data=data, instance=repair),
+            Role.WORKER: WorkerForm(data=data, instance=repair),
         }
         return user_form.get(self.request.user.role)
+
+    def post(self, request, pk):
+        _filter = self._get_repair_filter(self.request.user)
+        repair = get_object_or_404(Repair, pk=pk, **_filter)
+        form = self._get_form(repair, data=request.POST)
+        if form.is_valid():
+            users = list(repair.users.all())
+            form.save()
+            repair.users.add(request.user, *users)
+        context = {
+            'repair': repair,
+            'form': form,
+        }
+        return render(request, self.template_name, context)
 
     def get(self, request, pk):
         _filter = self._get_repair_filter(self.request.user)

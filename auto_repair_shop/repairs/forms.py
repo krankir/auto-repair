@@ -13,15 +13,16 @@ class WorkerForm(forms.ModelForm):
     status = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'form-control'}),
         choices=[
-            Status.PROGRESS,
-            Status.TESTS,
+            item for item in Status.choices if item[0] in (
+                'PROGRESS', 'TESTS',
+            )
         ]
     )
 
     class Meta:
         model = Repair
         fields = (
-            'status'
+            'status',
         )
 
 
@@ -32,16 +33,16 @@ class MasterForm(forms.ModelForm):
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
         queryset=Parts.objects.all(),
     )
-    users = forms.ModelChoiceField(
+    users = forms.ModelMultipleChoiceField(
         widget=forms.Select(attrs={'class': 'form-control'}),
         queryset=User.objects.filter(role=Role.WORKER),
     )
     status = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'form-control'}),
         choices=[
-            Status.READY_TO_WORK,
-            Status.RE_REPAIR,
-            Status.VERIFICATION,
+            item for item in Status.choices if item[0] in (
+                'CONFIRMED', 'READY_TO_WORK', 'RE_REPAIR',
+            )
         ]
     )
 
@@ -72,6 +73,12 @@ class TechnicianForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'}),
         queryset=TypeRepair.objects.all(),
     )
+    status = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        choices=[
+            item for item in Status.choices if item[0] == 'CONFIRMED'
+        ]
+    )
 
     class Meta:
         model = Repair
@@ -80,6 +87,7 @@ class TechnicianForm(forms.ModelForm):
             'time_to_work',
             'places_to_work',
             'type_repair',
+            'status',
         )
 
 
