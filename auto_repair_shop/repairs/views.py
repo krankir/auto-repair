@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic import FormView, ListView
 
 from repairs.forms import CustomerForm, TechnicianForm, MasterForm, WorkerForm
-from repairs.mixins import RepairMixin
+from repairs.mixins import RepairMixin, CustomerLoginRequiredMixin
 from repairs.models import Repair
 from users.models import Role
 
@@ -64,7 +64,7 @@ class ListRepair(RepairMixin, ListView):
         return Repair.objects.filter(**_filter)
 
 
-class CreateRepair(FormView):
+class CreateRepair(CustomerLoginRequiredMixin, FormView):
     """Класс создания заявки на ремонт автомобиля."""
 
     template_name = 'create_repair.html'
