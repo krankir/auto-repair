@@ -4,10 +4,6 @@
 ### Технологии:
 
 Python, Django, PostgreSQL
-  CUSTOMER = 'CUSTOMER', 'Клиент'
-    TECHNICIAN = 'TECHNICIAN', 'Техник'
-    MASTER = 'MASTER', 'Мастер'
-    WORKER = 'WORKER', 'Слесарь
 
 ### Пользовательские роли
 - **CUSTOMER (Клиент)** — создаёт заявку на ремонт.
