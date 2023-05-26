@@ -5,10 +5,10 @@ from django.db import models
 class Role(models.TextChoices):
     """Роли пользователей."""
 
-    CUSTOMER = 'CUSTOMER', 'Клиент'
-    TECHNICIAN = 'TECHNICIAN', 'Техник'
-    MASTER = 'MASTER', 'Мастер'
-    WORKER = 'WORKER', 'Слесарь'
+    CUSTOMER = ('CUSTOMER', 'Клиент')
+    TECHNICIAN = ('TECHNICIAN', 'Техник')
+    MASTER = ('MASTER', 'Мастер')
+    WORKER = ('WORKER', 'Слесарь')
 
 
 class User(AbstractUser):
