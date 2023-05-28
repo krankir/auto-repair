@@ -21,7 +21,7 @@ Python, Django, PostgreSQL
 
 Клонируйте репозиторий и перейдите в него в командной строке:
 ```sh
-git clone https://github.com:krankir/auto-repair-shop.git
+git clone https://github.com:krankir/auto-repair.git
 ```
 ```sh
 cd yatube_final
