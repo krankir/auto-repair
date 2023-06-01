@@ -15,9 +15,30 @@ Python, Django, PostgreSQL
 - **WORKER (Слесарь)** — берёт заявку в работу, после окончания работ закрывает заявку.
 - **MASTER (Мастер)** — проверяет выполнение работ, вследствие чего он может закрыть заявку либо отправить на переработку.
 
-- Клонировать репозиторий:
+## Как запустить проект локально
+
+1. Скачайте код проекта с GitHub
 ```
-git@github.com:krankir/auto-repair-shop.git
+git clone https://github.com/krankir/auto-repair
+```
+2. Создайте виртуальное окружение, активируйте его и установите зависимости
+```
+python -m venv venv
+source venv/Scripts/activate если у вас Windows
+source venv/bin/activate если у вас macOS или Linux
+pip install -r requirements.txt
+```
+3. Перейдите в директорию auto_repair_shop/ и выполните миграции
+```
+python manage.py migrate
+```
+4. Запустите сервер
+```
+python manage.py runserver
+```
+5. Откройте сайт в браузере
+```
+http://127.0.0.1:8000/
 ```
 
 ### Автор backend'а:
